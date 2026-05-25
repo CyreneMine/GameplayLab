@@ -129,7 +129,12 @@ commit body 必须包含：
 - 先执行 `git status`
 - 确认当前分支
 - 确认远程仓库
-- 再执行 `git push`
+- 确认 `.secrets/github-token.txt` 存在且非空
+- 使用 `.secrets/github-token.txt` 中的 GitHub token 进行临时认证 push
+- 不再尝试 GitHub 登录流程
+- 不把 token 打印到终端输出、最终回复或任何文档中
+- 不把 token 写入 git remote URL
+- 不提交 `.secrets/` 中的任何文件
 
 如果本地仓库还没有初始化 Git，必须：
 - 自动初始化 git
@@ -160,6 +165,23 @@ commit body 必须包含：
 - 学习记录更新和本地 commit 属于题目检查后的默认流程。
 - push 永远需要我明确确认。
 - 如果我明确说“只检查，不更新/不提交”，则本次按我的明确要求执行。
+
+## GitHub Token 推送规则
+
+GitHub push 使用本地文件 `.secrets/github-token.txt` 中的 token。
+
+推送命令必须使用临时认证方式，例如：
+- 读取 `.secrets/github-token.txt`
+- 生成本次命令使用的 Authorization header
+- 使用 `git -c http.sslBackend=openssl -c http.extraHeader=... push`
+
+禁止：
+- 在对话、文档、提交信息或终端输出中显示 token
+- 将 token 写入 `origin` 或任何 git remote
+- 将 token 文件加入暂存区或提交到 GitHub
+- 再尝试 `git credential-manager github login` 作为默认 push 方式
+
+`.secrets/` 必须保持在 `.gitignore` 中。
 
 ## README 维护规则
 
