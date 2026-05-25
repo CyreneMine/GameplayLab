@@ -1,56 +1,57 @@
 # GameplayLab
 
-GameplayLab is a long-term Unity Gameplay / client development practice project.
+GameplayLab 是一个长期维护的 Unity Gameplay / 客户端开发练习项目。
 
-This repository is used to grow a small player-controller sandbox into a more complete gameplay engineering lab. The focus is not only finishing isolated exercises, but building the habits behind real Unity client work: input handling, controller structure, physics decisions, camera behavior, gameplay state, animation parameters, UI feedback, and small reusable systems.
+这个仓库不是单纯用来存放课堂练习代码，而是用来把一个小型玩家控制器实验场，逐步扩展成更完整的 Gameplay 工程训练环境。项目会持续围绕输入、角色控制、摄像机、物理、状态机、动画、UI、技能和 AI 等客户端核心模块积累代码与记录。
 
 ## 当前目标
 
-Build a Unity Gameplay / client development growth path step by step.
+当前目标是沿着 Unity Gameplay / 客户端开发路线逐步成长。
 
-The current stage is focused on player control fundamentals:
+现阶段重点放在玩家控制基础上：
 
-- Understand the difference between Transform-driven movement and physics/controller-driven movement.
-- Use Unity Input System with clear gameplay action names and callback flow.
-- Build a player controller that can gradually evolve instead of becoming a single messy script.
-- Record each practice step, common mistakes, and reusable gameplay notes.
+- 理解 Transform 直接移动、Rigidbody 物理控制、CharacterController 控制之间的差异。
+- 熟悉 Unity Input System 的输入配置、回调流程和 Gameplay 语义命名。
+- 让玩家控制器从能跑起来，逐步变成结构清晰、可继续扩展的代码。
+- 长期记录练习过程、常见问题和可复用的 Gameplay 写法。
 
 ## 当前已完成
 
-The project has completed the first player-control foundation stage:
+项目已经完成第一阶段的玩家控制基础练习：
 
-- WASD movement with `Input.GetKey` and `transform.Translate`
-- Q/E rotation with `transform.Rotate`
-- Unity Input System setup
-- `InputAction.CallbackContext` input callbacks
-- Movement input cached as `Vector2`
-- Mouse Delta look control
-- Character yaw and camera pitch separation
-- Camera pitch clamp
-- Cursor lock for FPS-style control
-- Shift sprint with `performed` / `canceled`
-- `isRunning` state-based sprint logic
+- 使用 `Input.GetKey` 和 `transform.Translate` 实现 WASD 移动
+- 使用 `transform.Rotate` 实现 Q/E 旋转
+- 配置并使用 Unity Input System
+- 使用 `InputAction.CallbackContext` 接收输入回调
+- 将移动输入缓存为 `Vector2`
+- 使用 Mouse Delta 实现鼠标视角控制
+- 区分角色水平旋转和摄像机上下俯仰
+- 使用 Clamp 限制摄像机俯仰角
+- 实现 FPS 风格的鼠标锁定
+- 使用 Shift 实现冲刺
+- 使用 `performed` / `canceled` 处理按住状态
+- 使用 `isRunning` 状态控制冲刺速度
 
-The main practice script for this stage is:
+当前阶段主要练习脚本：
 
 - `Assets/Scripts/Lesson01.cs`
 
 ## 后续计划
 
-Next stages will move from basic input and Transform control into more production-like gameplay systems:
+后续会从基础输入和 Transform 控制，逐步进入更接近正式项目的 Gameplay 系统：
 
-- Rigidbody jump
-- Grounded detection
-- CharacterController movement
-- Camera follow
-- Animator parameters
-- FSM state machine
-- Interaction system
-- Simple skill system
-- UI health / stamina bars
-- Simple enemy AI
+- Rigidbody 跳跃
+- Grounded 地面检测
+- CharacterController 移动
+- 摄像机跟随
+- Animator 动画参数
+- FSM 状态机
+- 交互系统
+- 简单技能系统
+- UI 血条 / 体力条
+- 简单敌人 AI
 
-The immediate next stage is Rigidbody jump, followed by grounded detection and CharacterController comparison.
+下一阶段会先进入 Rigidbody 跳跃，然后继续练习 grounded 检测，并对比 CharacterController 的角色控制写法。
 
 ## 使用技术
 
@@ -59,43 +60,44 @@ The immediate next stage is Rigidbody jump, followed by grounded detection and C
 - Unity Input System
 - Input Actions
 - `InputAction.CallbackContext`
-- Transform movement and rotation
-- Camera pitch clamp
-- Rigidbody and CharacterController planned for upcoming stages
+- Transform 移动与旋转
+- Camera Pitch Clamp
+- Rigidbody
+- CharacterController
 
 ## 项目结构
 
 - `Assets/`
-  Unity assets, scenes, materials, input actions, and gameplay scripts.
+  Unity 资源目录，包含场景、材质、输入配置和 Gameplay 脚本。
 - `Assets/Scripts/`
-  Practice scripts and generated Input System C# wrapper code.
+  练习脚本和 Input System 生成的 C# 包装类。
 - `Docs/`
-  Long-term learning records, common mistake tracking, and reusable gameplay notes.
+  长期学习记录、常见问题记录和 Gameplay 笔记。
 - `Docs/LearningProgress.md`
-  Chronological progress log. Updated after code reviews and stage summaries.
+  按时间追加的学习进度记录。每次代码检查或阶段复盘后维护。
 - `Docs/CommonMistakes.md`
-  Repeated issues and habits that need attention.
+  记录重复出现的问题和需要长期提醒的编码习惯。
 - `Docs/GameplayNotes.md`
-  Stable gameplay/client patterns worth keeping for future work.
+  记录已经形成固定方案、后续可以复用的 Gameplay / 客户端写法。
 - `AGENTS.md`
-  Project-specific coaching, documentation, and Git workflow rules.
+  项目专用的训练规则、文档维护规则和 Git 工作流规则。
 - `Packages/`
-  Unity package manifest and package lock.
+  Unity 包配置。
 - `ProjectSettings/`
-  Unity project settings.
+  Unity 项目设置。
 
 ## 学习记录
 
-Progress is tracked in:
+学习进度查看：
 
 - `Docs/LearningProgress.md`
 
-Common recurring issues are tracked in:
+常见问题查看：
 
 - `Docs/CommonMistakes.md`
 
-Reusable gameplay notes are tracked in:
+Gameplay 笔记查看：
 
 - `Docs/GameplayNotes.md`
 
-GameplayLab should keep growing as a real practice repository: each completed stage should leave behind code, notes, and a clearer direction for the next system.
+GameplayLab 会持续作为一个成长型仓库维护。每完成一个阶段，项目中都应该留下对应的代码、复盘记录和下一步方向，让这个工程逐渐从基础练习场变成一个真正可展示的 Unity Gameplay / 客户端开发作品集。
