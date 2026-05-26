@@ -27,11 +27,11 @@ public class Lesson01 : MonoBehaviour
     private void Awake()
     {
         playerController = new PlayerController();
+        rigidBody = GetComponent<Rigidbody>();
     }
 
     private void Start()
     {
-        rigidBody = GetComponent<Rigidbody>();
         currentSpeed = WalkSpeed;
         runSpeed = WalkSpeed*2;
         Cursor.lockState = CursorLockMode.Locked;
@@ -54,7 +54,7 @@ public class Lesson01 : MonoBehaviour
         playerController.Player.Look.performed += OnLook;
         playerController.Player.Look.canceled += OnLook;
         
-        playerController.Player.Interact.performed += OnJump;
+        playerController.Player.Jump.performed += OnJump;
     }
 
     private void OnLook(InputAction.CallbackContext ctx)
@@ -77,7 +77,7 @@ public class Lesson01 : MonoBehaviour
         playerController.Player.Look.performed -= OnLook;
         playerController.Player.Look.canceled -= OnLook;
         
-        playerController.Player.Interact.performed -= OnJump;
+        playerController.Player.Jump.performed -= OnJump;
     }
 
     // Update is called once per frame

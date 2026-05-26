@@ -16,7 +16,7 @@
                     "initialStateCheck": true
                 },
                 {
-                    "name": "Interact",
+                    "name": "Jump",
                     "type": "Button",
                     "id": "be90e2c2-ae7f-4d1e-b939-f210527f5748",
                     "expectedControlType": "",
@@ -225,7 +225,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Interact",
+                    "action": "Jump",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

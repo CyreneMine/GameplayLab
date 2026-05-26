@@ -96,3 +96,9 @@
 
 ### 下一阶段建议
 第七题建议做 Grounded 地面检测：判断玩家是否在地面上，只有 grounded 时才允许跳跃，避免无限空中跳。
+
+### 检查后修正
+- 已将 Input Actions 中原本复用的 `Interact` 改名为 `Jump`，并同步更新生成的 `PlayerSystem_Actions.cs`。
+- `Lesson01.cs` 中跳跃订阅已改为 `playerController.Player.Jump.performed += OnJump`，取消订阅也同步改为 `Jump`。
+- `Rigidbody` 引用已从 `Start` 移动到 `Awake`，组件引用初始化时机更稳。
+- 这次修正解决了“输入 action 命名不贴合 Gameplay 语义”的重复问题，是一次很好的检查后迭代。
