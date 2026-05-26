@@ -20,6 +20,8 @@ public class Lesson01 : MonoBehaviour
     private float runSpeed = 4f;
     private bool isRunning;
     private Rigidbody rigidBody;
+
+    private bool isGrounded;
     //展示出来调数值 后续正式场合我觉得应该不能暴露出去
     [SerializeField]
     private float jumpForce = 10f;
@@ -86,16 +88,8 @@ public class Lesson01 : MonoBehaviour
 
     private void OnJump(InputAction.CallbackContext ctx)
     {
-        if (ctx.performed)
+        if (ctx.performed&&isGrounded)
         {
-            /*
-             * Force 模式 没有效果
-             * Acceleration 模式 没有效果
-             * VelocityChange 能正常实现跳跃
-             * Impulse 能正常实现跳跃
-             * 为什么？
-             * 我与gpt的沟通过程 请前往 项目根目录下 GameDev_KnowledgeBase\物理系统\Unity_Rigidbody_ForceMode_学习记录.md
-             */
             rigidBody.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
         }
     }
