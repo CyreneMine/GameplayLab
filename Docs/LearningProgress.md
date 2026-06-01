@@ -135,3 +135,35 @@
 
 ### 下一阶段建议
 建议先做第七题小优化：把地面检测整理成持续更新的 `CheckGrounded()`，并把 `groundLayer` / `groundCheckDistance` 暴露到 Inspector。完成后再进入 CharacterController。
+
+## 2026-06-01 第七题优化检查：持续 Grounded 状态维护
+
+### 当前题目
+第 7 题优化：持续维护 `isGrounded` 状态。
+
+### 本题目标
+把地面检测从 `OnJump` 中拆出来，改为每帧持续更新 grounded 状态，让 `OnJump` 只负责响应跳跃输入并读取状态。
+
+### 我做得好的地方
+- 已经新增 `CheckGrounded()`，并在 `Update` 中持续调用，`isGrounded` 现在由 Raycast 结果直接赋值。
+- `OnJump` 中已经不再执行 `Physics.Raycast`，职责变得更清楚：输入回调只判断 `ctx.performed && isGrounded` 并触发跳跃。
+- `groundCheckDistance` 和 `groundMask` 已改为 `[SerializeField]` 字段，并在 Scene 中配置了 `groundCheckDistance: 1.01` 与 Ground LayerMask。
+- `ProjectSettings/TagManager.asset` 已保存 `Ground` Layer，`SampleScene.unity` 中 Plane 已设置为 Ground Layer，说明这次 Inspector / Project Settings 配置进入了 Git。
+- 额外整理了 `GameDev_KnowledgeBase/物理系统/Lesson07_GroundedState_StudyRecord.md`，记录了“持续状态”和“连跳理论风险”的完整思考过程。
+
+### 当前存在的问题
+- `groundCheckDistance` 从代码默认值 `1f` 到场景配置 `1.01` 仍然比较贴边。当前能工作，但如果角色高度、缩放、Collider 或地面起伏变化，可能再次出现检测不稳定。
+- 当前仍从 `transform.position` 向下发射射线。对 Capsule 来说这是从中心点检测，后续更稳定的方式是使用脚底附近的 `groundCheck` 点，或改用 `CheckSphere`。
+- `Update` 中仍保留了注释掉的 `Debug.DrawRay`，验证完成后可以清理，或在需要时用 Gizmos / 条件调试显示。
+- `OnRun` 中的 `print(isRunning)` 仍然是之前遗留的高频调试输出问题，后续整理玩家控制器时应该删除。
+
+### 推荐改进方向
+- 暂时接受当前 Raycast 方案，进入 CharacterController 前可以先做一次小清理：删除无用调试注释，统一命名和公开字段风格。
+- 后续学习 CharacterController 时，重点比较 `CharacterController.isGrounded` 与自定义 Raycast / CheckSphere grounded 的差异。
+- 如果未来继续用 Rigidbody 路线，可以尝试加入“向上速度时不算稳定 grounded”或更短检测距离，解决刚起跳瞬间理论上仍可能检测到地面的边界问题。
+
+### 当前阶段总结
+第七题已经从“按跳跃时临时检测地面”升级为“持续维护 grounded 状态”。这一步很关键，因为 `isGrounded` 以后不只是跳跃条件，还会服务于动画、下落、落地反馈、二段跳重置和 CharacterController 学习。
+
+### 下一阶段建议
+下一题建议进入 CharacterController 基础移动：先实现不依赖 Rigidbody 的水平移动和重力处理，再对比当前 Rigidbody + Raycast 路线。

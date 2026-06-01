@@ -37,3 +37,6 @@
 - Capsule 角色从中心点向下检测时，距离应略大于脚底距离，避免刚好贴边导致检测不稳定。
 - `isGrounded` 应作为持续维护的 Gameplay 状态，而不是只在跳跃输入触发时临时计算。
 - `LayerMask.GetMask("Ground")` 适合理解概念，后续更推荐 `[SerializeField] private LayerMask groundLayer;` 由 Inspector 配置。
+- `OnJump` 应读取 grounded 状态并触发跳跃，不应承担地面检测职责。
+- 持续维护的 grounded 状态可以被跳跃、动画、下落、落地反馈、二段跳重置等多个系统复用。
+- 刚起跳瞬间理论上仍可能被射线检测为 grounded，后续可通过缩短检测距离、脚底检测点、速度方向判断或离地缓冲来处理。

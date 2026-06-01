@@ -34,6 +34,7 @@ GameplayLab 是一个长期维护的 Unity Gameplay / 客户端开发练习项�
 - 使用 `Rigidbody.AddForce` 实现基础跳跃
 - 初步理解 `ForceMode.Impulse` 与其他 ForceMode 的差异
 - 使用 `Physics.Raycast` 实现基础 Grounded 地面检测
+- 持续维护 `isGrounded` 状态，并将地面检测参数暴露到 Inspector
 
 当前阶段主要练习脚本：
 
@@ -52,7 +53,7 @@ GameplayLab 是一个长期维护的 Unity Gameplay / 客户端开发练习项�
 - UI 血条 / 体力条
 - 简单敌人 AI
 
-下一阶段会继续优化 grounded 检测的持续状态维护，并对比 CharacterController 的角色控制写法。
+下一阶段会进入 CharacterController 基础移动，并对比 Rigidbody / Raycast 路线与 CharacterController 路线的差异。
 
 ## 使用技术
 

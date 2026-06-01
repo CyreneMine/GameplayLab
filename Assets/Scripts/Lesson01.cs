@@ -1,4 +1,4 @@
-using System;
+
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Serialization;
@@ -20,7 +20,9 @@ public class Lesson01 : MonoBehaviour
     private float runSpeed = 4f;
     private bool isRunning;
     private Rigidbody rigidBody;
-
+    [SerializeField] private float groundCheckDistance = 1f;
+    [SerializeField] private LayerMask groundMask;
+    
     private bool isGrounded;
     //展示出来调数值 后续正式场合我觉得应该不能暴露出去
     [SerializeField]
@@ -88,17 +90,8 @@ public class Lesson01 : MonoBehaviour
 
     private void OnJump(InputAction.CallbackContext ctx)
     {
-        // Debug.Log("按下跳跃键");
-        // Debug.DrawRay(transform.position, Vector3.down, Color.red,1.2f);
-        if (Physics.Raycast(transform.position,Vector3.down,1.2f,LayerMask.GetMask("Ground")))
-        {
-            // Debug.Log("在地面");
-            isGrounded = true;
-        }
-        // Debug.Log($"是否在地面{isGrounded}");
         if (ctx.performed&&isGrounded)
         {
-            isGrounded = false;
             rigidBody.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
         }
     }
@@ -125,6 +118,11 @@ public class Lesson01 : MonoBehaviour
         rotateInput = ctx.ReadValue<float>();
     }
     #endregion
+
+    private void CheckGrounded()
+    {
+        isGrounded = Physics.Raycast(transform.position, Vector3.down, groundCheckDistance, groundMask);
+    }
     void Update()
     {
         transform.Rotate(Vector3.up * (sensitivity * lookInput.x * Time.deltaTime));
@@ -134,6 +132,9 @@ public class Lesson01 : MonoBehaviour
         cameraTransform.transform.localRotation = Quaternion.Euler(mouseY, 0, 0);
         transform.Translate(new Vector3(moveInput.x,0,moveInput.y) * (currentSpeed * Time.deltaTime));
         transform.Rotate(Vector3.up * (rotateInput * rotateSpeed * Time.deltaTime));
+        
+        CheckGrounded();
+        // Debug.DrawRay(transform.position,Vector3.down,Color.red,1.1f);
         
         
         #region 旧版输入系统
