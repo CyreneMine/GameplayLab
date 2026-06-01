@@ -30,3 +30,10 @@
 - `Force` 和 `Impulse` 会受到 Rigidbody mass 影响；`Acceleration` 和 `VelocityChange` 不受 mass 影响。
 - `AddForce` 的参数在不同 `ForceMode` 下含义不同，不是 Unity 自动把同一个力拆成多份。
 - Drag / Linear Damping 更像速度衰减，不是会把物体反向推回去的固定阻力。
+
+## Grounded 检测
+
+- Raycast 地面检测要同时关注起点、方向、距离和 LayerMask。
+- Capsule 角色从中心点向下检测时，距离应略大于脚底距离，避免刚好贴边导致检测不稳定。
+- `isGrounded` 应作为持续维护的 Gameplay 状态，而不是只在跳跃输入触发时临时计算。
+- `LayerMask.GetMask("Ground")` 适合理解概念，后续更推荐 `[SerializeField] private LayerMask groundLayer;` 由 Inspector 配置。

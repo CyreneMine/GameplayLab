@@ -102,3 +102,36 @@
 - `Lesson01.cs` 中跳跃订阅已改为 `playerController.Player.Jump.performed += OnJump`，取消订阅也同步改为 `Jump`。
 - `Rigidbody` 引用已从 `Start` 移动到 `Awake`，组件引用初始化时机更稳。
 - 这次修正解决了“输入 action 命名不贴合 Gameplay 语义”的重复问题，是一次很好的检查后迭代。
+
+## 2026-06-01 第七题代码检查：Grounded 地面检测
+
+### 当前题目
+第 7 题：Grounded 地面检测。
+
+### 本题目标
+在 Rigidbody 跳跃基础上加入地面检测，让角色只有检测到地面时才能执行跳跃，避免空中无限跳。
+
+### 我做得好的地方
+- 已经使用 `Physics.Raycast` 从玩家位置向下检测地面，并把检测结果接入跳跃条件。
+- 通过实际现象定位到“刚开始附近不能跳”不是输入问题，而是射线长度过短，并把距离从 `1f` 调整到 `1.2f`，这是很好的 Debug 过程。
+- 使用 `LayerMask.GetMask("Ground")` 过滤地面，开始接触 LayerMask 思维，比不加筛选的射线更接近正式项目。
+- 在 `OnJump` 中加入 `ctx.performed && isGrounded` 判断，并在跳跃后把 `isGrounded` 设为 `false`，已经能防止连续空中跳。
+
+### 当前存在的问题
+- 当前 grounded 检测只在按下跳跃键时执行。功能上可以阻止空中连跳，但还不算真正的“持续更新的 grounded 状态”。正式玩家控制器通常会在 `Update` 或 `FixedUpdate` 中持续检测。
+- `isGrounded` 在射线未命中时没有直接赋值为 `false`，目前依赖跳跃后手动置 false。后续如果加入落地动画、下落状态、坡道、离地检测，这个状态会不够可靠。
+- `LayerMask.GetMask("Ground")` 写在检测调用里，每次跳跃都会重新按字符串查找。练习阶段可以接受，正式写法更推荐 `[SerializeField] private LayerMask groundLayer;`。
+- `Debug.DrawRay` 和 `Debug.Log` 已经注释掉，但长期保留较多调试注释会让控制器越来越乱，后续完成验证后应逐步清理。
+- 从项目文件看，`ProjectSettings/TagManager.asset` 和 `SampleScene.unity` 中暂时没有记录 Ground Layer / 地面 Layer 的变更。如果你是在 Unity Editor 中配置好的，需要确认已经保存 Project Settings 和 Scene，否则 GitHub 上的项目可能缺少这部分配置。
+
+### 推荐改进方向
+- 下一步把地面检测拆成单独方法，例如 `CheckGrounded()`，在 `Update` 或 `FixedUpdate` 中持续更新 `isGrounded`。
+- 把检测距离、ground layer 做成 `[SerializeField]` 字段，避免魔法数字和字符串散落在逻辑中。
+- 可以继续先用 Raycast，但要理解脚底检测点比角色中心点更稳定；之后可以尝试 `CheckSphere` 作为更宽容的地面检测方案。
+- 保存并确认 `Ground` Layer 与地面对象的配置进入 Git 版本记录。
+
+### 当前阶段总结
+第七题已经完成基础功能：跳跃不再是无条件触发，而是开始依赖地面检测。你也通过射线长度问题理解了“检测起点、检测距离、角色碰撞体尺寸”之间的关系。当前代码是一个可运行的第一版 grounded 判断，但还需要从“按键时检测一下”进化到“持续维护角色状态”。
+
+### 下一阶段建议
+建议先做第七题小优化：把地面检测整理成持续更新的 `CheckGrounded()`，并把 `groundLayer` / `groundCheckDistance` 暴露到 Inspector。完成后再进入 CharacterController。

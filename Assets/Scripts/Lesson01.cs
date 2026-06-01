@@ -88,8 +88,17 @@ public class Lesson01 : MonoBehaviour
 
     private void OnJump(InputAction.CallbackContext ctx)
     {
+        // Debug.Log("按下跳跃键");
+        // Debug.DrawRay(transform.position, Vector3.down, Color.red,1.2f);
+        if (Physics.Raycast(transform.position,Vector3.down,1.2f,LayerMask.GetMask("Ground")))
+        {
+            // Debug.Log("在地面");
+            isGrounded = true;
+        }
+        // Debug.Log($"是否在地面{isGrounded}");
         if (ctx.performed&&isGrounded)
         {
+            isGrounded = false;
             rigidBody.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
         }
     }

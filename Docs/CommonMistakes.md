@@ -21,3 +21,9 @@
 - 输入 action 命名需要贴合 Gameplay 语义。第 5 题冲刺曾经出现过命名不合适的问题，第 6 题又把跳跃绑定到 `Interact`，后续应新增 `Jump` action，而不是复用无关 action。
 - 已经挂上 Rigidbody 的动态物体，不建议长期继续用 `transform.Translate` 处理水平移动。练习阶段可以先过渡，但正式控制器应统一移动方案。
 - 组件依赖要尽量显式。脚本依赖 Rigidbody 时，可以考虑 `[RequireComponent(typeof(Rigidbody))]`，避免 Inspector 漏挂组件后运行时报错。
+
+## 2026-06-01 第七题复盘补充
+
+- 物理检测参数不要写得太极限。Capsule 中心点向下检测时，距离刚好等于半高容易因为浮动、碰撞体尺寸或起点误差导致检测失败。
+- Gameplay 状态最好持续更新，而不是只在输入触发时临时判断。`isGrounded` 后续应在帧循环中维护。
+- Layer 配置属于项目数据的一部分。Editor 里改完 Layer 和对象 Layer 后，要确认 Project Settings / Scene 已保存并进入 Git。
