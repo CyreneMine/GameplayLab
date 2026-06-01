@@ -167,3 +167,8 @@
 
 ### 下一阶段建议
 下一题建议进入 CharacterController 基础移动：先实现不依赖 Rigidbody 的水平移动和重力处理，再对比当前 Rigidbody + Raycast 路线。
+
+### 检查后清理
+- 已删除 `OnRun` 中遗留的 `print(isRunning)`。
+- 已清理 `Update` 中用于调试的 `mouseX` 注释和 `Debug.DrawRay` 注释。
+- PlayerController 脚本更干净，减少了练习过程中留下的临时实验痕迹。

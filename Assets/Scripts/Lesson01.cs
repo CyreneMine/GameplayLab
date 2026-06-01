@@ -111,7 +111,6 @@ public class Lesson01 : MonoBehaviour
         {
             currentSpeed = WalkSpeed;
         }
-        print(isRunning);
     }
     private void OnRotate(InputAction.CallbackContext ctx)
     {
@@ -126,7 +125,6 @@ public class Lesson01 : MonoBehaviour
     void Update()
     {
         transform.Rotate(Vector3.up * (sensitivity * lookInput.x * Time.deltaTime));
-        // mouseX += lookInput.x*sensitivity;
         mouseY -= lookInput.y*sensitivity*Time.deltaTime;
         mouseY = Mathf.Clamp(mouseY, -maxCla, maxCla);
         cameraTransform.transform.localRotation = Quaternion.Euler(mouseY, 0, 0);
@@ -134,7 +132,6 @@ public class Lesson01 : MonoBehaviour
         transform.Rotate(Vector3.up * (rotateInput * rotateSpeed * Time.deltaTime));
         
         CheckGrounded();
-        // Debug.DrawRay(transform.position,Vector3.down,Color.red,1.1f);
         
         
         #region 旧版输入系统
