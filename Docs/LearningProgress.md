@@ -209,3 +209,10 @@
 
 ### 下一阶段建议
 建议先做第八题小整理：移除多余 `CapsuleCollider` / `PlayerInput`，调整 `gravity` 和 `walkSpeed`，再进入 CharacterController 跳跃。
+
+### 检查后修正
+- Scene 中第八题 Player 的 `gravity` 已调整为 `-10`，接近常见重力值。
+- Scene 中第八题 Player 的 `walkSpeed` 已调整为 `10`，解决了初始移动过慢的问题。
+- 已移除第八题 Player 上额外的 `CapsuleCollider`，保留 `CharacterController` 作为角色碰撞移动组件。
+- Player 位置已从高空测试高度调整回 `y = 1`，更适合正常练习场景启动。
+- `velocity.y = -2f` 的地面贴合写法已记录在 `Docs/GameplayNotes.md`：它用于避免下落速度在地面上无限累积。
