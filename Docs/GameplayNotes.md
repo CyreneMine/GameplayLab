@@ -40,3 +40,11 @@
 - `OnJump` 应读取 grounded 状态并触发跳跃，不应承担地面检测职责。
 - 持续维护的 grounded 状态可以被跳跃、动画、下落、落地反馈、二段跳重置等多个系统复用。
 - 刚起跳瞬间理论上仍可能被射线检测为 grounded，后续可通过缩短检测距离、脚底检测点、速度方向判断或离地缓冲来处理。
+
+## CharacterController
+
+- `CharacterController` 不使用 Rigidbody 自动重力；水平速度、竖直速度和重力需要脚本自己维护。
+- `CharacterController.Move()` 接收的是“本帧位移”，如果当前变量表示速度，就在传入 Move 前统一乘 `Time.deltaTime`。
+- 地面贴合常见写法是在 grounded 且竖直速度为负时，把 `velocity.y` 重置为一个小负数，例如 `-2f`。
+- `CharacterController` 适合做可控性强的角色移动；Rigidbody 更接近物理驱动，两条路线要分清。
+- 一个测试角色通常保留 `CharacterController` 即可，不需要额外 `Rigidbody` 或多余 `CapsuleCollider`。

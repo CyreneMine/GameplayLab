@@ -32,3 +32,10 @@
 
 - 射线检测距离不要过度依赖“刚好能用”的数值。`1.01` 对当前 Capsule 可以工作，但仍属于接近边界的参数。
 - 临时调试注释验证完要清理，否则 PlayerController 会逐渐堆积历史实验痕迹。
+
+## 2026-06-03 第八题复盘补充
+
+- 使用 `CharacterController.Move()` 时要统一单位：速度最后乘一次 `Time.deltaTime`，不要把“已乘 deltaTime 的位移”和“未乘 deltaTime 的速度”混加。
+- `CharacterController` 和 `Rigidbody` 是两条不同角色控制路线，测试对象上不应同时依赖 Rigidbody。
+- `CharacterController` 自带胶囊碰撞能力，通常不需要再额外挂一个 `CapsuleCollider`。
+- 手动使用生成的 Input Actions 类时，场景上的 `PlayerInput` 组件可能是多余的，要避免输入接入方式混杂。

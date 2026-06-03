@@ -172,3 +172,40 @@
 - 已删除 `OnRun` 中遗留的 `print(isRunning)`。
 - 已清理 `Update` 中用于调试的 `mouseX` 注释和 `Debug.DrawRay` 注释。
 - PlayerController 脚本更干净，减少了练习过程中留下的临时实验痕迹。
+
+## 2026-06-03 第八题代码检查：CharacterController 基础移动
+
+### 当前题目
+第 8 题：CharacterController 基础移动。
+
+### 本题目标
+新建一个不依赖 Rigidbody 的 CharacterController 测试角色，使用已有 Input System 的 Move 输入，通过 `CharacterController.Move()` 实现水平移动，并手动维护重力下落。
+
+### 我做得好的地方
+- 已新建 `Assets/Scripts/Lesson08_CharacterControllerMove.cs`，没有直接覆盖第七题的 Rigidbody / Raycast 练习脚本，保留了两条路线的对比空间。
+- 场景中新增了 `Player` 测试对象，并挂载了 `CharacterController` 和第八题脚本；旧的 Capsule 对象被禁用，避免两个玩家同时响应输入。
+- 脚本中通过 `moveInput` 缓存移动输入，继续沿用了 Input System 的状态缓存思路。
+- 已经理解并修正了 `Time.deltaTime` 的单位问题：`horizontalMove` 和 `velocity` 都保持为速度，最后统一 `characterController.Move(finalMove * Time.deltaTime)`。
+- 已经加入 `velocity.y` 和 grounded 时重置为小负数的逻辑，开始理解 CharacterController 不会自动处理 Rigidbody 式重力。
+- 删除空的 `Lesson02.cs` 是合理清理，减少了无意义脚本。
+
+### 当前存在的问题
+- `gravity` 当前默认值是 `-1f`，偏小，角色下落会很轻。正式或常见练习值建议先用 `-9.81f`。
+- 场景中的 `walkSpeed` 配置为 `0.5`，移动会非常慢；如果不是刻意观察，可以调整到 `3~6` 之间。
+- CharacterController 对象上同时保留了 `CapsuleCollider`。CharacterController 自己已经带有胶囊碰撞体，额外的 `CapsuleCollider` 暂时没必要，后续可能让碰撞理解变混乱。
+- 脚本手动创建 `PlayerController` 输入类，同时场景对象上还挂了 `PlayerInput`。当前可能不直接出错，但这两种输入接入方式最好二选一，避免后续重复响应或配置混乱。
+- `using System;` 未使用，可以删除。
+- `horizontalMove` 和 `finalMove` 只是每帧临时计算值，不一定需要作为字段长期保存，后续可以改为 `Update` 内局部变量。
+
+### 推荐改进方向
+- 把 `gravity` 调整为 `-9.81f`，把 `walkSpeed` 调到更正常的角色移动范围。
+- 移除 CharacterController 测试对象上的额外 `CapsuleCollider`，保留 `CharacterController` 即可。
+- 当前脚本既然手动 new `PlayerController`，就可以先移除场景对象上的 `PlayerInput`，保持输入接入方式单一。
+- 后续可以加 `[RequireComponent(typeof(CharacterController))]`，明确脚本依赖。
+- 等基础移动稳定后，再进入 CharacterController 跳跃和 `characterController.isGrounded` 的对比练习。
+
+### 当前阶段总结
+第八题核心目标已经完成：你开始理解 CharacterController 路线中“组件负责碰撞移动，但重力和速度需要自己维护”的开发方式。最关键的概念是 `CharacterController.Move()` 接收的是本帧位移，如果手里保存的是速度，就必须最后统一乘一次 `Time.deltaTime`。
+
+### 下一阶段建议
+建议先做第八题小整理：移除多余 `CapsuleCollider` / `PlayerInput`，调整 `gravity` 和 `walkSpeed`，再进入 CharacterController 跳跃。

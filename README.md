@@ -35,16 +35,19 @@ GameplayLab 是一个长期维护的 Unity Gameplay / 客户端开发练习项�
 - 初步理解 `ForceMode.Impulse` 与其他 ForceMode 的差异
 - 使用 `Physics.Raycast` 实现基础 Grounded 地面检测
 - 持续维护 `isGrounded` 状态，并将地面检测参数暴露到 Inspector
+- 使用 `CharacterController.Move()` 实现基础水平移动
+- 初步理解 CharacterController 手动重力和速度维护
 
 当前阶段主要练习脚本：
 
 - `Assets/Scripts/Lesson01.cs`
+- `Assets/Scripts/Lesson08_CharacterControllerMove.cs`
 
 ## 后续计划
 
 后续会从基础输入和 Transform 控制，逐步进入更接近正式项目的 Gameplay 系统：
 
-- CharacterController 移动
+- CharacterController 跳跃
 - 摄像机跟随
 - Animator 动画参数
 - FSM 状态机
@@ -53,7 +56,7 @@ GameplayLab 是一个长期维护的 Unity Gameplay / 客户端开发练习项�
 - UI 血条 / 体力条
 - 简单敌人 AI
 
-下一阶段会进入 CharacterController 基础移动，并对比 Rigidbody / Raycast 路线与 CharacterController 路线的差异。
+下一阶段会继续整理 CharacterController 测试对象，并进入 CharacterController 跳跃练习。
 
 ## 使用技术
 
