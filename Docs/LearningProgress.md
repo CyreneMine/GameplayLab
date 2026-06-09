@@ -216,3 +216,37 @@
 - 已移除第八题 Player 上额外的 `CapsuleCollider`，保留 `CharacterController` 作为角色碰撞移动组件。
 - Player 位置已从高空测试高度调整回 `y = 1`，更适合正常练习场景启动。
 - `velocity.y = -2f` 的地面贴合写法已记录在 `Docs/GameplayNotes.md`：它用于避免下落速度在地面上无限累积。
+
+## 2026-06-09 第九题代码检查：CharacterController 跳跃
+
+### 当前题目
+第 9 题：CharacterController 跳跃。
+
+### 本题目标
+在第八题 CharacterController 移动与手动重力基础上，使用 Input System 的 `Jump` Action，在 grounded 时为手动维护的 `velocity.y` 设置起跳初速度，并实现禁止空中跳跃的基础跳跃流程。
+
+### 我做得好的地方
+- 已正确订阅和取消订阅 `Jump` 输入，继续保持了 `OnEnable` / `OnDisable` 生命周期成对管理的习惯。
+- 已使用 `characterController.isGrounded` 限制起跳条件，没有使用 Rigidbody 或 `AddForce`，符合 CharacterController 路线。
+- 已正确使用 `Mathf.Sqrt(jumpHeight * -2f * gravity)`，能够根据目标高度和重力计算起跳初速度。
+- 已理解 `Mathf.Sqrt` 是平方根，并能从运动学公式解释 `-2f`、负重力和目标跳跃高度之间的关系。
+- 保留了持续重力与 grounded 时小负数重置逻辑，跳跃、上升、最高点和下落仍使用同一套竖直速度。
+
+### 当前存在的问题
+- 当前把跳跃输入保存为持续状态 `isJump`。按住跳跃键时，角色落地后的下一帧会再次满足 `isGrounded && isJump`，从而自动连续跳跃。
+- `Jump` 属于一次性输入，目前同时订阅 `performed` 和 `canceled`，再通过 `ReadValueAsButton()` 保存状态，处理方式更像冲刺等按住型输入。
+- `OnJump` 中仍保留 `Debug.Log(isJump)`。调试输出验证完成后应清理，这已经是此前出现过的重复问题。
+- 场景中的第九题 Player 仍挂有 `PlayerInput`，而脚本使用的是手动创建的生成类 `PlayerController`；输入接入方式混杂的问题仍未整理。
+- `using System;`、字段形式的 `horizontalMove` / `finalMove` 仍是第八题遗留的小型清理项。
+
+### 推荐改进方向
+- 让 `Jump.performed` 表达一次跳跃请求，而不是长期保存“按钮是否按住”。最小修改方向是只在一次性触发时执行 grounded 判断并设置 `velocity.y`，或保存一个会在消费后立即清除的 `jumpRequested`。
+- 删除不再需要的 `Jump.canceled` 订阅和临时 `Debug.Log`。
+- 在 Unity Play Mode 中重点验证：短按跳跃、按住跳跃直到落地、空中重复按跳跃三种情况。
+- 后续整理输入接入方式，手动生成类和 `PlayerInput` 组件二选一。
+
+### 当前阶段总结
+第九题的跳跃物理计算已经掌握，代码也能够产生 CharacterController 跳跃效果。当前剩余问题不在公式，而在 Gameplay 输入语义：移动是持续状态，冲刺是按住状态，普通跳跃通常是一次性请求。修正按住落地自动连跳后，本题即可正式完成。
+
+### 下一阶段建议
+先完成第九题最后修正并验证一次性跳跃行为。之后进入摄像机跟随，让 CharacterController 角色移动方向与摄像机观察方向开始建立联系。

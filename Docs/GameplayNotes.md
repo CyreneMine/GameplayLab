@@ -48,3 +48,7 @@
 - 地面贴合常见写法是在 grounded 且竖直速度为负时，把 `velocity.y` 重置为一个小负数，例如 `-2f`。
 - `CharacterController` 适合做可控性强的角色移动；Rigidbody 更接近物理驱动，两条路线要分清。
 - 一个测试角色通常保留 `CharacterController` 即可，不需要额外 `Rigidbody` 或多余 `CapsuleCollider`。
+- 使用目标跳跃高度控制 CharacterController 跳跃时，可用 `velocity.y = Mathf.Sqrt(jumpHeight * -2f * gravity)` 计算起跳初速度。公式来自最高点竖直速度为 0 的运动学关系。
+- `jumpHeight` 表示期望高度，`jumpSpeed` 表示起跳初速度。直接写 `velocity.y = jumpSpeed` 也可以，但参数含义和调参方式不同。
+- 起跳后持续执行 `velocity.y += gravity * Time.deltaTime`，竖直速度会经历正数、0、负数，分别对应上升、最高点和下落。
+- 普通跳跃通常应作为一次性输入请求处理；如果把它长期保存为按住状态，角色可能在落地时自动再次起跳。

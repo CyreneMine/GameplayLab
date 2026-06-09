@@ -12,6 +12,8 @@ public class Lesson08_CharacterControllerMove : MonoBehaviour
     [SerializeField] private float walkSpeed;
     private Vector3 horizontalMove;
     private Vector3 finalMove;
+    private bool isJump = false;
+    [SerializeField] private float jumpHeight = 10f;
     private void Awake()
     {
         characterController = GetComponent<CharacterController>();
@@ -23,12 +25,16 @@ public class Lesson08_CharacterControllerMove : MonoBehaviour
         playerController.Enable();
         playerController.Player.Move.performed += OnWalk;
         playerController.Player.Move.canceled += OnWalk;
+        playerController.Player.Jump.performed += OnJump;
+        playerController.Player.Jump.canceled += OnJump;
     }
 
     private void OnDisable()
     {
         playerController.Player.Move.performed -= OnWalk;
         playerController.Player.Move.canceled -= OnWalk;
+        playerController.Player.Jump.performed -= OnJump;
+        playerController.Player.Jump.canceled -= OnJump;
         playerController.Disable();
     }
 
@@ -36,9 +42,19 @@ public class Lesson08_CharacterControllerMove : MonoBehaviour
     {
         moveInput = context.ReadValue<Vector2>();
     }
+
+    private void OnJump(InputAction.CallbackContext context)
+    {
+        isJump = context.ReadValueAsButton();
+        Debug.Log(isJump);
+    }
     private void Update()
     {
-        
+        if (characterController.isGrounded && isJump)
+        {
+            //使用sqrt算出 跳跃到目标点需要给予的y轴速度
+            velocity.y = Mathf.Sqrt(jumpHeight * -2f * gravity);
+        }
         if (characterController.isGrounded && velocity.y < 0)
         {
             velocity.y = -2f;

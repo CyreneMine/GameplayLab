@@ -39,3 +39,8 @@
 - `CharacterController` 和 `Rigidbody` 是两条不同角色控制路线，测试对象上不应同时依赖 Rigidbody。
 - `CharacterController` 自带胶囊碰撞能力，通常不需要再额外挂一个 `CapsuleCollider`。
 - 手动使用生成的 Input Actions 类时，场景上的 `PlayerInput` 组件可能是多余的，要避免输入接入方式混杂。
+
+## 2026-06-09 第九题复盘补充
+
+- 不要把所有 Input Action 都保存成按住状态。普通跳跃是一次性请求；如果使用 `performed` / `canceled` 保存 `isJump`，按住按键直到落地会触发自动连续跳跃。
+- 临时 `Debug.Log` 再次出现在输入回调中。验证输入状态后要及时删除，避免长期在高频 Gameplay 流程中产生无用日志。
