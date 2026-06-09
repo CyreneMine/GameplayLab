@@ -37,6 +37,8 @@ GameplayLab 是一个长期维护的 Unity Gameplay / 客户端开发练习项�
 - 持续维护 `isGrounded` 状态，并将地面检测参数暴露到 Inspector
 - 使用 `CharacterController.Move()` 实现基础水平移动
 - 初步理解 CharacterController 手动重力和速度维护
+- 使用目标跳跃高度公式实现 CharacterController 跳跃
+- 使用一次性 `Jump.performed` 输入限制落地自动连跳
 
 当前阶段主要练习脚本：
 
@@ -47,7 +49,6 @@ GameplayLab 是一个长期维护的 Unity Gameplay / 客户端开发练习项�
 
 后续会从基础输入和 Transform 控制，逐步进入更接近正式项目的 Gameplay 系统：
 
-- CharacterController 跳跃
 - 摄像机跟随
 - Animator 动画参数
 - FSM 状态机
@@ -56,7 +57,7 @@ GameplayLab 是一个长期维护的 Unity Gameplay / 客户端开发练习项�
 - UI 血条 / 体力条
 - 简单敌人 AI
 
-下一阶段会继续整理 CharacterController 测试对象，并进入 CharacterController 跳跃练习。
+下一阶段会继续整理 CharacterController 玩家控制器，并进入摄像机跟随练习。
 
 ## 使用技术
 

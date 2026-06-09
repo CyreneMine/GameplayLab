@@ -26,7 +26,6 @@ public class Lesson08_CharacterControllerMove : MonoBehaviour
         playerController.Player.Move.performed += OnWalk;
         playerController.Player.Move.canceled += OnWalk;
         playerController.Player.Jump.performed += OnJump;
-        playerController.Player.Jump.canceled += OnJump;
     }
 
     private void OnDisable()
@@ -34,7 +33,6 @@ public class Lesson08_CharacterControllerMove : MonoBehaviour
         playerController.Player.Move.performed -= OnWalk;
         playerController.Player.Move.canceled -= OnWalk;
         playerController.Player.Jump.performed -= OnJump;
-        playerController.Player.Jump.canceled -= OnJump;
         playerController.Disable();
     }
 
@@ -46,15 +44,14 @@ public class Lesson08_CharacterControllerMove : MonoBehaviour
     private void OnJump(InputAction.CallbackContext context)
     {
         isJump = context.ReadValueAsButton();
-        Debug.Log(isJump);
+        if (characterController.isGrounded)
+        {
+            velocity.y = Mathf.Sqrt(jumpHeight * -2f * gravity);
+            isJump = false;
+        }
     }
     private void Update()
     {
-        if (characterController.isGrounded && isJump)
-        {
-            //使用sqrt算出 跳跃到目标点需要给予的y轴速度
-            velocity.y = Mathf.Sqrt(jumpHeight * -2f * gravity);
-        }
         if (characterController.isGrounded && velocity.y < 0)
         {
             velocity.y = -2f;
