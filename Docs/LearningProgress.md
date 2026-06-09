@@ -257,3 +257,8 @@
 - 已删除临时 `Debug.Log`，输入回调保持干净。
 - 当前 `isJump` 已不参与任何 Gameplay 判断，属于可以继续删除的冗余状态；它不影响现有跳跃功能。
 - 第九题核心目标已经完成，下一阶段可以进入摄像机跟随。
+
+### 最终清理确认
+- 已删除不再参与判断的 `isJump` 字段，以及 `OnJump` 中对应的 `ReadValueAsButton()` 和重置代码。
+- 当前跳跃流程已经精简为：`Jump.performed` 触发、检查 `characterController.isGrounded`、计算并设置起跳速度。
+- 第九题已完成最终清理，可以进入下一题。

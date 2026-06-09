@@ -12,7 +12,6 @@ public class Lesson08_CharacterControllerMove : MonoBehaviour
     [SerializeField] private float walkSpeed;
     private Vector3 horizontalMove;
     private Vector3 finalMove;
-    private bool isJump = false;
     [SerializeField] private float jumpHeight = 10f;
     private void Awake()
     {
@@ -43,11 +42,10 @@ public class Lesson08_CharacterControllerMove : MonoBehaviour
 
     private void OnJump(InputAction.CallbackContext context)
     {
-        isJump = context.ReadValueAsButton();
         if (characterController.isGrounded)
         {
             velocity.y = Mathf.Sqrt(jumpHeight * -2f * gravity);
-            isJump = false;
+
         }
     }
     private void Update()
